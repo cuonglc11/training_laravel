@@ -32,7 +32,7 @@
 
                 <td>
                     <button type="button" class="btn btn-primary"
-                            onclick="showEditCategory({{$item->id}} ,'{{$item->name}}')">Update
+                            onclick="showEditCategory({{$item->id}})">Update
                     </button>
                     <button type="button" class="btn btn-danger" onclick="deleteCategory({{$item->id}})">Delete</button>
                 </td>

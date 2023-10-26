@@ -11,12 +11,21 @@ function addCategory() {
 
 }
 
-function showEditCategory(id, name) {
-    styleModel(name, 'Upload Category', id, 'none', 'none', 'none', 'block', 'none')
+function showEditCategory(id) {
+    var formData = new FormData();
+    formData.append('id', id)
+    sentData('category/show', formData, 'POST', function (response) {
+        console.log(response);
+        styleModel(response.data.name, 'Upload Category', id, response.img, 'block', 'none')
+
+    }, function (error) {
+        alert('lỗi hệ thống');
+    })
 }
 
 function showAddCategory() {
-    styleModel('', 'Upload Category', '', 'block', 'block', 'block', 'none', 'block')
+
+    styleModel('', 'Add Category', '', '', 'none', 'block')
 }
 
 function uploadCategory() {
@@ -25,7 +34,7 @@ function uploadCategory() {
     var formData = new FormData($('#yourFormId')[0]);
     formData.append('name', name);
     formData.append('id', id);
-    sentData('category/update', formData, 'POST',function (response) {
+    sentData('category/update', formData, 'POST', function (response) {
         location.reload();
     }, function (error) {
     })
@@ -34,20 +43,18 @@ function uploadCategory() {
 function deleteCategory(id) {
     var formData = new FormData();
     formData.append('id', id);
-    sentData('category/destroy', formData, 'POST',function (response) {
+    sentData('category/destroy', formData, 'POST', function (response) {
         location.reload();
     }, function (error) {
     })
 }
 
-function styleModel(name, text, idCategory, customFile, avt, imgAvt, upload, save) {
+function styleModel(name, text, idCategory, imgAvt, upload, save) {
     $("#exampleModalToggle").modal('show');
     $('#nameCategory').val(name);
     $('#titile').text(text);
+    $('#preview-image').attr('src', imgAvt);
     $('#idCategory').val(idCategory);
-    $('#custom-file').css('display', customFile);
-    $('#avt').css('display', avt);
-    $('#img_avt').css('display', imgAvt);
     $('#upload').css('display', upload);
     $('#save').css('display', save);
 

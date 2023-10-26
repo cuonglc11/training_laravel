@@ -35,10 +35,22 @@ class CategoryController extends Controller
 
 
     }
+    public function show(Request $request) {
+        $category = Categories::select('name' , 'id' ,'image')->find($request->input('id'));
+        if ($category) {
+            return response()->json(['data' => $category, 'img' => asset('assets/upload/category/' . $category->image)], 200);
+        }
+        return response()->json(['data' => 'not data'], 400);
+
+    }
 
     public function update(Request $request)
     {
         $category = Categories::find($request->input('id'));
+        $file = $request->file('image');
+        if ($request->hasFile('image')){
+            $category->image = UploadImage::new()->update('assets/upload/category/' . $category->name, $file, 'assets/upload/category');
+        }
         $category->name = $request->input('name');
         $category->slug = Str::slug($request->input('name'));
         if ($category->save()) {
